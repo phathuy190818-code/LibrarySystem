@@ -1,19 +1,22 @@
 package LIBRARY;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 public class BorrowHistory {
 	private Book book;
 	private Customer customer;
-	private int borrowYear;
-	private int borrowDate;
-	private int dueDate;
+	private LocalDate returnDate;
+	private LocalDate borrowDate;
+	private LocalDate dueDate;
 	private boolean returned;
 	private boolean late;
 
-	public BorrowHistory(Book book, Customer customer, int borrowYear, int borrowDate, int dueDate) {
+	public BorrowHistory(Book book, Customer customer, LocalDate returnDate, LocalDate borrowDate, LocalDate dueDate) {
 		super();
 		this.book = book;
 		this.customer = customer;
-		this.borrowYear = borrowYear;
+		this.returnDate = returnDate;
 		this.borrowDate = borrowDate;
 		this.dueDate = dueDate;
 		this.returned = false;
@@ -28,15 +31,15 @@ public class BorrowHistory {
 		return customer;
 	}
 
-	public int getBorrowYear() {
-		return borrowYear;
+	public LocalDate getReturnDate() {
+		return returnDate;
 	}
 
-	public int getBorrowDate() {
+	public LocalDate getBorrowDate() {
 		return borrowDate;
 	}
 
-	public int getDueDate() {
+	public LocalDate getDueDate() {
 		return dueDate;
 	}
 
@@ -55,10 +58,18 @@ public class BorrowHistory {
 	public void setLate(boolean late) {
 		this.late = late;
 	}
+	//Tính số ngày quá hạn trả sách
+	public long getOverdueDays() {
+        if (returnDate.isAfter(dueDate)) {
+            return ChronoUnit.DAYS.between(dueDate, returnDate);
+        }
+        //Trả đúng hạn thì số ngày quá hạn = 0
+        return 0;
+    }
 
 	@Override
 	public String toString() {
-		return customer.getName() + " muon sach " + book.getTitle() + " nam " + borrowYear + ", ngay muon=" + borrowDate
+		return customer.getName() + " muon sach " + book.getTitle() + " ngay tra " + returnDate + ", ngay muon=" + borrowDate
 				+ ", han tra=" + dueDate + ",tre han=" + late;
 	}
 

@@ -1,5 +1,6 @@
 package LIBRARY;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class BorrowService {
@@ -10,7 +11,7 @@ public class BorrowService {
 		this.database = database;
 	}
 
-	public boolean borrowBook(Book book, Customer customer, int year, int borrowDate, int dueDate) {
+	public boolean borrowBook(Book book, Customer customer, LocalDate returnDate, LocalDate borrowDate, LocalDate dueDate) {
 		if (book == null || customer == null) {
 			return false;
 		}
@@ -24,12 +25,12 @@ public class BorrowService {
 		}
 		book.setStatus(false);
 
-		BorrowHistory history = new BorrowHistory(book, customer, year, borrowDate, dueDate);
+		BorrowHistory history = new BorrowHistory(book, customer, returnDate, borrowDate, dueDate);
 		database.addHistory(history);
 		return true;
 	}
 
-	public boolean returnBook(Book book, int currentDate) {
+	public boolean returnBook(Book book) {
 		List<BorrowHistory> histories = database.getHistories();
 		for (int i = 0; i < histories.size(); i++) {
 			BorrowHistory history = histories.get(i);
@@ -37,8 +38,8 @@ public class BorrowService {
 				history.setReturned(true);
 				book.setStatus(true);
 				
-				int totalDate=currentDate-history.getBorrowDate();
-				if (totalDate > history.getDueDate()) {
+				//Kiểm trả số ngày quá hạn nếu > 0 => Khách hàng vi phạm
+				if (history.getOverdueDays() > 0) {
 					history.setLate(true);
 					Customer customer = history.getCustomer();
 					customer.setViolation(true);

@@ -21,7 +21,7 @@ public class BookReport implements ReportStrategy {
 			boolean matchCategory = filter.getCategory().equals("")
 					|| b.getCategory().equalsIgnoreCase(filter.getCategory());
 			// loc theo nam
-			boolean matchYear = filter.getYear() == 0 || h.getBorrowYear() == filter.getYear();
+			boolean matchYear = filter.getYear() == 0 || h.getBook().getYear() == filter.getYear();
 			// loc theo trang thai
 			boolean matchStatus = true;
 			    //xem sach dang muon

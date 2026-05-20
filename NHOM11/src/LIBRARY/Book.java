@@ -6,6 +6,8 @@ public class Book {
 	private String author;
 	private String category;
 	private boolean status;
+	private double price;
+	private int year;// Năm sản xuất
 //true=con sach
 //false=sach dang duoc muon
 
@@ -40,6 +42,12 @@ public class Book {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public int getYear() {
+		return year;
 	}
 
 	@Override
