@@ -9,6 +9,7 @@ public class BorrowHistory {
 	private LocalDate returnDate;
 	private LocalDate borrowDate;
 	private LocalDate dueDate;
+	private int borrowYear;
 	private boolean returned;
 	private boolean late;
 
@@ -58,6 +59,11 @@ public class BorrowHistory {
 	public void setLate(boolean late) {
 		this.late = late;
 	}
+	
+	public int getBorrowYear() {
+		return borrowYear;
+	}
+
 	//Tính số ngày quá hạn trả sách
 	public long getOverdueDays() {
         if (returnDate.isAfter(dueDate)) {
