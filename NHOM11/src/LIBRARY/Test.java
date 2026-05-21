@@ -1,5 +1,7 @@
 package LIBRARY;
 
+import java.time.LocalDate;
+
 public class Test {
 	public static void main(String[] args) {
 		UI ui = new UI();
@@ -27,17 +29,26 @@ public class Test {
 		Book b1 = ui.getSystem().getDatabases().getBooks().get(0);
 		Book b2 = ui.getSystem().getDatabases().getBooks().get(1);
 
-		boolean borrow1 = ui.getSystem().getBorrowService().borrowBook(b1, c4, 2025, 1, 7);
+		boolean borrow1 = ui.getSystem().getBorrowService().borrowBook(b1, c4, 
+				LocalDate.of(2026, 1, 1), 
+				LocalDate.of(2026, 1, 10), 
+				LocalDate.of(2026, 1, 15));
 		System.out.println("Muon sach lan 1:" + borrow1);
 
-		boolean borrow2 = ui.getSystem().getBorrowService().borrowBook(b2, c1, 2025, 1, 7);
+		boolean borrow2 = ui.getSystem().getBorrowService().borrowBook(b2, c1, 
+				LocalDate.of(2026, 2, 2),
+				LocalDate.of(2026, 2, 11),
+				LocalDate.of(2026, 2, 17));
 		System.out.println("Muon sach lan 2:" + borrow2);
 
-		boolean borrow3 = ui.getSystem().getBorrowService().borrowBook(b1, c5, 2025, 2, 7);
+		boolean borrow3 = ui.getSystem().getBorrowService().borrowBook(b1, c5, 
+				LocalDate.of(2026, 3, 7),
+				LocalDate.of(2026, 3, 17),
+				LocalDate.of(2026, 3, 27));
 		System.out.println("Muon sach lan 3:" + borrow3);
 
 		// tra sach
-		boolean return1 = ui.getSystem().getBorrowService().returnBook(b1, 10);
+		boolean return1 = ui.getSystem().getBorrowService().returnBook(b1);
 		System.out.println("Tra sach lan 1:" + return1);
 
 		ui.getSystem().getDatabases().showAllCustomer();

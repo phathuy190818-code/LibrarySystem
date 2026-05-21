@@ -11,7 +11,7 @@ public class BorrowService {
 		this.database = database;
 	}
 
-	public boolean borrowBook(Book book, Customer customer, LocalDate returnDate, LocalDate borrowDate, LocalDate dueDate) {
+	public boolean borrowBook(Book book, Customer customer, LocalDate borrowDate, LocalDate returnDate, LocalDate dueDate) {
 		if (book == null || customer == null) {
 			return false;
 		}
@@ -25,7 +25,7 @@ public class BorrowService {
 		}
 		book.setStatus(false);
 
-		BorrowHistory history = new BorrowHistory(book, customer, returnDate, borrowDate, dueDate);
+		BorrowHistory history = new BorrowHistory(book, customer, borrowDate, returnDate, dueDate);
 		database.addHistory(history);
 		return true;
 	}

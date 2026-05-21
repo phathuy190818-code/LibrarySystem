@@ -13,7 +13,7 @@ public class BorrowHistory {
 	private boolean returned;
 	private boolean late;
 
-	public BorrowHistory(Book book, Customer customer, LocalDate returnDate, LocalDate borrowDate, LocalDate dueDate) {
+	public BorrowHistory(Book book, Customer customer, LocalDate borrowDate, LocalDate returnDate, LocalDate dueDate) {
 		super();
 		this.book = book;
 		this.customer = customer;
