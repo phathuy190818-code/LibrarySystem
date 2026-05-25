@@ -17,7 +17,7 @@ public class CustomerReport implements ReportStrategy {
 		for (int i = 0; i < customers.size(); i++) {
 			Customer c = customers.get(i);
 			// xem tat ca khach hang
-			if (filter.getStatus().equalsIgnoreCase("all")) {
+			if (filter.getStatus().equalsIgnoreCase("all") || filter.getStatus().equals("")) {
 				System.out.println(c);
 				// xem khach hang dang vi pham
 			} else if (filter.getStatus().equalsIgnoreCase("violation") && c.isViolation() == true) {

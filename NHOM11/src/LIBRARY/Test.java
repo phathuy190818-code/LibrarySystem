@@ -20,14 +20,19 @@ public class Test {
 		ui.getSystem().getDatabases().addCustomer(c4);
 		ui.getSystem().getDatabases().addCustomer(c5);
 
-		System.out.println("Danh sach sach");
-		ui.getSystem().getDatabases().showAllBook();
-		System.out.println("Danh sach khach hang");
-		ui.getSystem().getDatabases().showAllCustomer();
-
 		// muon sach
 		Book b1 = ui.getSystem().getDatabases().getBooks().get(0);
 		Book b2 = ui.getSystem().getDatabases().getBooks().get(1);
+		//Sách b3 b4 là sách có sẵn
+		Book b3 = new Book("113", "CTDL", "N. Dũ", "Programming", true, 120000, 2008);
+		ui.getSystem().getDatabases().addBook(b3);
+        Book b4 = new Book("114", "TKHDT", "N. Trâm", "Programming", true, 200000, 1994);
+        ui.getSystem().getDatabases().addBook(b4);
+        
+        System.out.println("Danh sach sach");
+		ui.getSystem().getDatabases().showAllBook();
+		System.out.println("Danh sach khach hang");
+		ui.getSystem().getDatabases().showAllCustomer();
 
 		boolean borrow1 = ui.getSystem().getBorrowService().borrowBook(b1, c4, 
 				LocalDate.of(2026, 1, 1), 
@@ -46,10 +51,26 @@ public class Test {
 				LocalDate.of(2026, 3, 17),
 				LocalDate.of(2026, 3, 27));
 		System.out.println("Muon sach lan 3:" + borrow3);
+		//Mượn sách b3
+		boolean borrow4 = ui.getSystem().getBorrowService().borrowBook(b3, c2, 
+				LocalDate.of(2026, 5, 20),
+				LocalDate.of(2026, 5, 25),
+				LocalDate.of(2026, 5, 27));
+		System.out.println("Muon sach lan 4:" + borrow4);
 
 		// tra sach
 		boolean return1 = ui.getSystem().getBorrowService().returnBook(b1);
 		System.out.println("Tra sach lan 1:" + return1);
+		//tra sách b3
+		boolean return2 = ui.getSystem().getBorrowService().returnBook(b3);
+		System.out.println("Tra sach lan 2:" + return2);
+		
+		//Tính tiền phạt của khách c2
+		double fine1 = ui.getSystem().getBookService().checkFine(c2);
+		System.out.println("Tiền phạt cần thanh toán của khách hàng " + c2 + " là " + fine1);
+		//đặt trước sách b4
+		boolean reserved = ui.getSystem().getBookService().reserveBook(b4, c3);
+        System.out.println("Dat truoc thanh cong: " + reserved);
 
 		ui.getSystem().getDatabases().showAllCustomer();
 

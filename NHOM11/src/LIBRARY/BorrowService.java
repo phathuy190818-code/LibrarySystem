@@ -31,6 +31,9 @@ public class BorrowService {
 	}
 
 	public boolean returnBook(Book book) {
+		if(book == null) {
+			return false;
+		}
 		List<BorrowHistory> histories = database.getHistories();
 		for (int i = 0; i < histories.size(); i++) {
 			BorrowHistory history = histories.get(i);
@@ -52,4 +55,48 @@ public class BorrowService {
 		}
 		return false;
 	}
+	//Lấy danh sách vi phạm lỗi của khách hàng
+	public List<BorrowHistory> getViolationHistories(Customer customer){
+		List<BorrowHistory> result = new ArrayList<BorrowHistory>();
+		for (BorrowHistory history : database.getHistories()) {
+			if(history.getCustomer() == customer && history.isViolationRecord()) {
+				result.add(history);
+			}
+		}
+		return result;
+	}
+	public List<BorrowHistory> getDueSoonRecords(LocalDate date, int daysBeforeDue) {
+        List<BorrowHistory> result = new ArrayList<BorrowHistory>();
+        LocalDate maxDueDate = date.plusDays(daysBeforeDue);
+        for (BorrowHistory history : database.getHistories()) {
+            if (!history.isReturned()
+                    && !history.getDueDate().isBefore(date)
+                    && !history.getDueDate().isAfter(maxDueDate)) {
+                result.add(history);
+            }
+        }
+        return result;
+    }
+
+    public List<BorrowHistory> getDueTodayRecords(LocalDate date) {
+        List<BorrowHistory> result = new ArrayList<BorrowHistory>();
+        for (BorrowHistory history : database.getHistories()) {
+            if (!history.isReturned() && history.getDueDate().isEqual(date)) {
+                result.add(history);
+            }
+        }
+        return result;
+    }
+
+    public void notifyDueBooks(LocalDate date, int daysBeforeDue, NotificationService notificationService) {
+        for (BorrowHistory history : getDueSoonRecords(date, daysBeforeDue)) {
+            notificationService.notifyCustomer(history.getCustomer(),
+                    "Sach sap den han tra: " + history.getBook().getTitle() + ", han tra " + history.getDueDate());
+        }
+
+        for (BorrowHistory history : getDueTodayRecords(date)) {
+            notificationService.notifyCustomer(history.getCustomer(),
+                    "Sach den han tra hom nay: " + history.getBook().getTitle());
+        }
+}
 }

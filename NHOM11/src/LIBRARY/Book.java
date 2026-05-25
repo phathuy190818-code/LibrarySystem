@@ -11,13 +11,15 @@ public class Book {
 //true=con sach
 //false=sach dang duoc muon
 
-	public Book(String idBook, String title, String author, String category, boolean status) {
+	public Book(String idBook, String title, String author, String category, boolean status, double price, int year) {
 		super();
 		this.idBook = idBook;
 		this.title = title;
 		this.author = author;
 		this.category = category;
 		this.status = status;
+		this.price = price;
+		this.year = year;
 	}
 
 	public String getIdBook() {
@@ -53,7 +55,7 @@ public class Book {
 	@Override
 	public String toString() {
 		return "idBook=" + idBook + ", title=" + title + ", author=" + author + ", category=" + category + ", status="
-				+ status;
+				+ status + "price=" + price + "year=" + year;
 	}
 
 }

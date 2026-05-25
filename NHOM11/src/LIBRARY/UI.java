@@ -30,7 +30,13 @@ public class UI {
 		System.out.print("Nhap the loai:");
 		String category = sc.nextLine();
 
-		Book book = new Book(idBook, title, author, category, true);
+        System.out.print("Nhap gia sach:");
+        double price = Double.parseDouble(sc.nextLine());
+        
+        System.out.print("Nhap nam xuat ban:");
+        int year = Integer.parseInt(sc.nextLine());
+
+		Book book = new Book(idBook, title, author, category, true, price, year);
 		boolean result = system.getBookService().addBook(book);
 		if (result) {
 			System.out.println("Them sach thanh cong!");

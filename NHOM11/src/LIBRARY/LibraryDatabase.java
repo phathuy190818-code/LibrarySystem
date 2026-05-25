@@ -6,6 +6,7 @@ public class LibraryDatabase {
 	private List<Book> books = new ArrayList<Book>();
 	private List<Customer> customers = new ArrayList<Customer>();
 	private List<BorrowHistory> histories = new ArrayList<BorrowHistory>();
+	private List<Reservation> reservations = new ArrayList<Reservation>();
 
 	public LibraryDatabase() {
 		super();
@@ -22,6 +23,10 @@ public class LibraryDatabase {
 	public List<BorrowHistory> getHistories() {
 		return histories;
 	}
+	
+	public List<Reservation> getReservations() {
+        return reservations;
+    }
 
 	// them sach
 	public boolean addBook(Book book) {
@@ -59,6 +64,10 @@ public class LibraryDatabase {
 	public void addHistory(BorrowHistory history) {
 		histories.add(history);
 	}
+	
+	public void addReservation(Reservation reservation) {
+        reservations.add(reservation);
+    }
 
 //hien thi danh sach cua sach
 	public void showAllBook() {
