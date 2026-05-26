@@ -5,24 +5,21 @@ public class LibrarySystem {
 	private BookService bookService;
 	private BorrowService borrowService;
 	private ReportService reportService;
-	private FineService fineService;
-    private Payment payment;
-    private NotificationService notificationService;
-    private ReservationService reservationService;
+	private AuthService authService;
+	private FineStrategy fineStrategy;
+	private RegisterSystem registerSystem;
+	private LoginSystem loginSystem;
 
 	public LibrarySystem() {
 		super();
 		this.databases = new LibraryDatabase();
 		this.bookService = new BookService(databases);
-		this.borrowService = new BorrowService(databases);
+		this.fineStrategy = new FineStrategy(5000);
+		this.borrowService = new BorrowService(databases, fineStrategy);
 		this.reportService = new ReportService();
-		this.notificationService = new NotificationService();
-        this.notificationService.addObserver(new CustomerNotificationObserver());
-        this.fineService = new FineService(borrowService, new DailyCappedFineStrategy(5000));
-        this.reservationService = new ReservationService(databases, notificationService);
-        this.bookService.setFineService(fineService);
-        this.bookService.setReservationService(reservationService);
-        this.payment = new Payment(fineService, new BankPaymentGateway());
+		this.authService = new AuthService(databases);
+		this.registerSystem = new RegisterSystem(authService);
+		this.loginSystem = new LoginSystem(authService);
 
 	}
 
@@ -41,20 +38,21 @@ public class LibrarySystem {
 	public ReportService getReportService() {
 		return reportService;
 	}
-	public FineService getFineService() {
-        return fineService;
-    }
 
-    public Payment getPayment() {
-        return payment;
-    }
+	public AuthService getAuthService() {
+		return authService;
+	}
 
-    public NotificationService getNotificationService() {
-        return notificationService;
-    }
+	public FineStrategy getFineStrategy() {
+		return fineStrategy;
+	}
 
-    public ReservationService getReservationService() {
-        return reservationService;
-    }
+	public RegisterSystem getRegisterSystem() {
+		return registerSystem;
+	}
+
+	public LoginSystem getLoginSystem() {
+		return loginSystem;
+	}
 
 }

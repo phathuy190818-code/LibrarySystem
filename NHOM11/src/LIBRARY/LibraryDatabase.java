@@ -6,7 +6,6 @@ public class LibraryDatabase {
 	private List<Book> books = new ArrayList<Book>();
 	private List<Customer> customers = new ArrayList<Customer>();
 	private List<BorrowHistory> histories = new ArrayList<BorrowHistory>();
-	private List<Reservation> reservations = new ArrayList<Reservation>();
 
 	public LibraryDatabase() {
 		super();
@@ -23,10 +22,6 @@ public class LibraryDatabase {
 	public List<BorrowHistory> getHistories() {
 		return histories;
 	}
-	
-	public List<Reservation> getReservations() {
-        return reservations;
-    }
 
 	// them sach
 	public boolean addBook(Book book) {
@@ -56,18 +51,57 @@ public class LibraryDatabase {
 	}
 
 //them khach hang
-	public void addCustomer(Customer customer) {
+	public boolean addCustomer(Customer customer) {
+		if (customer == null || findCustomerById(customer.getId()) != null) {
+			return false;
+		}
 		customers.add(customer);
+		return true;
+	}
+
+	public Customer findCustomerById(String id) {
+		if (id == null) {
+			return null;
+		}
+		for (int i = 0; i < customers.size(); i++) {
+			Customer customer = customers.get(i);
+			if (customer.getId().equalsIgnoreCase(id)) {
+				return customer;
+			}
+		}
+		return null;
+	}
+
+	public Customer findCustomerByEmail(String email) {
+		if (email == null) {
+			return null;
+		}
+		for (int i = 0; i < customers.size(); i++) {
+			Customer customer = customers.get(i);
+			if (customer.getEmail() != null && customer.getEmail().equalsIgnoreCase(email)) {
+				return customer;
+			}
+		}
+		return null;
+	}
+
+	public Book findBookById(String id) {
+		if (id == null) {
+			return null;
+		}
+		for (int i = 0; i < books.size(); i++) {
+			Book book = books.get(i);
+			if (book.getIdBook().equalsIgnoreCase(id)) {
+				return book;
+			}
+		}
+		return null;
 	}
 
 //them lich su muon
 	public void addHistory(BorrowHistory history) {
 		histories.add(history);
 	}
-	
-	public void addReservation(Reservation reservation) {
-        reservations.add(reservation);
-    }
 
 //hien thi danh sach cua sach
 	public void showAllBook() {

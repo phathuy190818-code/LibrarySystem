@@ -12,8 +12,6 @@ public class BorrowHistory {
 	private int borrowYear;
 	private boolean returned;
 	private boolean late;
-	private boolean finePaid;//Đã thanh toán
-	private boolean paymentFailed;//Thanh toán thất bại
 
 	public BorrowHistory(Book book, Customer customer, LocalDate borrowDate, LocalDate returnDate, LocalDate dueDate) {
 		super();
@@ -24,8 +22,6 @@ public class BorrowHistory {
 		this.dueDate = dueDate;
 		this.returned = false;
 		this.late = false;
-		this.finePaid = false;
-		this.paymentFailed = false;
 	}
 
 	public Book getBook() {
@@ -60,42 +56,31 @@ public class BorrowHistory {
 		this.returned = returned;
 	}
 
+	public void setReturnDate(LocalDate returnDate) {
+		this.returnDate = returnDate;
+	}
+
 	public void setLate(boolean late) {
 		this.late = late;
 	}
 	
 	public int getBorrowYear() {
-		//Nếu Ngày mượn = null -> 0 
-		//Nếu Ngày mượn != null -> lấy được year
-		//Tránh trường hợp getYear khi chưa có Ngày mượn
-		return borrowDate == null ? 0 : borrowDate.getYear();
-	}
-	public void setFinePaid(boolean finePaid) {
-		this.finePaid = finePaid;
-		this.paymentFailed = false;
-	}
-
-	public void setPaymentFailed(boolean paymentFailed) {
-		this.paymentFailed = paymentFailed;
+		return borrowYear;
 	}
 
 	//Tính số ngày quá hạn trả sách
 	public long getOverdueDays() {
-        if (returnDate == null || dueDate == null || !returnDate.isAfter(dueDate)) {
-            return 0;
+        if (returnDate.isAfter(dueDate)) {
+            return ChronoUnit.DAYS.between(dueDate, returnDate);
         }
         //Trả đúng hạn thì số ngày quá hạn = 0
-        return ChronoUnit.DAYS.between(dueDate, returnDate);
+        return 0;
     }
-	//Kiểm tra xem có bị lỗi vi phạm
-	public boolean isViolationRecord() {
-		return returned && late && !finePaid;
-	}
 
 	@Override
 	public String toString() {
-		return customer.getName() + " muon sach " + book.getTitle() + ", ngay tra= " + returnDate + ", ngay muon= " + borrowDate
-				+ ", han tra=" + dueDate + ",tre han=" + late + ", da nop phat= " + finePaid;
+		return customer.getName() + " muon sach " + book.getTitle() + " ngay tra " + returnDate + ", ngay muon=" + borrowDate
+				+ ", han tra=" + dueDate + ",tre han=" + late;
 	}
 
 }

@@ -1,106 +1,236 @@
 package LIBRARY;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Test {
+	private static Scanner sc = new Scanner(System.in);
+	private static LibrarySystem system = new LibrarySystem();
+
 	public static void main(String[] args) {
-		UI ui = new UI();
-		// them sach
-		ui.addBook();
-		ui.addBook();
-		// them khach hang
-		Customer c1 = new Customer("IT1", "NGUYEN PHAT HUY", false);
-		Customer c2 = new Customer("IT2", "PHAN NGUYEN ANH TAI", false);
-		Customer c3 = new Customer("IT3", "TRAN THI YEN NHI", false);
-		Customer c4 = new Customer("IT4", "HUYNH MAN DAT", false);
-		Customer c5 = new Customer("IT5", "NGUYEN HO NHAT TAN", false);
-		ui.getSystem().getDatabases().addCustomer(c1);
-		ui.getSystem().getDatabases().addCustomer(c2);
-		ui.getSystem().getDatabases().addCustomer(c3);
-		ui.getSystem().getDatabases().addCustomer(c4);
-		ui.getSystem().getDatabases().addCustomer(c5);
+		addSampleBooks();
+		int choice;
+		do {
+			showMenu();
+			choice = readInt("Chon chuc nang: ");
 
-		// muon sach
-		Book b1 = ui.getSystem().getDatabases().getBooks().get(0);
-		Book b2 = ui.getSystem().getDatabases().getBooks().get(1);
-		//Sách b3 b4 là sách có sẵn
-		Book b3 = new Book("113", "CTDL", "N. Dũ", "Programming", true, 120000, 2008);
-		ui.getSystem().getDatabases().addBook(b3);
-        Book b4 = new Book("114", "TKHDT", "N. Trâm", "Programming", true, 200000, 1994);
-        ui.getSystem().getDatabases().addBook(b4);
-        
-        System.out.println("Danh sach sach");
-		ui.getSystem().getDatabases().showAllBook();
-		System.out.println("Danh sach khach hang");
-		ui.getSystem().getDatabases().showAllCustomer();
-
-		boolean borrow1 = ui.getSystem().getBorrowService().borrowBook(b1, c4, 
-				LocalDate.of(2026, 1, 1), 
-				LocalDate.of(2026, 1, 10), 
-				LocalDate.of(2026, 1, 15));
-		System.out.println("Muon sach lan 1:" + borrow1);
-
-		boolean borrow2 = ui.getSystem().getBorrowService().borrowBook(b2, c1, 
-				LocalDate.of(2026, 2, 2),
-				LocalDate.of(2026, 2, 11),
-				LocalDate.of(2026, 2, 17));
-		System.out.println("Muon sach lan 2:" + borrow2);
-
-		boolean borrow3 = ui.getSystem().getBorrowService().borrowBook(b1, c5, 
-				LocalDate.of(2026, 3, 7),
-				LocalDate.of(2026, 3, 17),
-				LocalDate.of(2026, 3, 27));
-		System.out.println("Muon sach lan 3:" + borrow3);
-		//Mượn sách b3
-		boolean borrow4 = ui.getSystem().getBorrowService().borrowBook(b3, c2, 
-				LocalDate.of(2026, 5, 20),
-				LocalDate.of(2026, 5, 25),
-				LocalDate.of(2026, 5, 27));
-		System.out.println("Muon sach lan 4:" + borrow4);
-
-		// tra sach
-		boolean return1 = ui.getSystem().getBorrowService().returnBook(b1);
-		System.out.println("Tra sach lan 1:" + return1);
-		//tra sách b3
-		boolean return2 = ui.getSystem().getBorrowService().returnBook(b3);
-		System.out.println("Tra sach lan 2:" + return2);
-		
-		//Tính tiền phạt của khách c2
-		double fine1 = ui.getSystem().getBookService().checkFine(c2);
-		System.out.println("Tiền phạt cần thanh toán của khách hàng " + c2 + " là " + fine1);
-		//đặt trước sách b4
-		boolean reserved = ui.getSystem().getBookService().reserveBook(b4, c3);
-        System.out.println("Dat truoc thanh cong: " + reserved);
-
-		ui.getSystem().getDatabases().showAllCustomer();
-
-		// xoa sach
-		boolean remove1 = ui.getSystem().getBookService().removeBook(b1.getIdBook());
-		System.out.println("Xoa sach 1" + remove1);
-
-		boolean remove2 = ui.getSystem().getBookService().removeBook("B100");
-		System.out.println("Xoa sach 2" + remove2);
-
-		// bao cao tat ca sach
-		ReportFilter filter1 = new ReportFilter("", 0, "all");
-		ReportStrategy strategy1 = new BookReport(ui.getSystem().getDatabases());
-
-		ui.getSystem().getReportService().setStrategy(strategy1);
-		ui.getSystem().getReportService().generateReport(filter1);
-
-		// bao cao sach dang muon
-		ReportFilter filter2 = new ReportFilter("", 0, "borrowed");
-		ui.getSystem().getReportService().generateReport(filter2);
-		// bao cao sach theo nam
-		ReportFilter filter3 = new ReportFilter("", 2025, "all");
-		ui.getSystem().getReportService().generateReport(filter3);
-
-		// bao cao khach hang vi pham
-		ReportStrategy strategy2 = new CustomerReport(ui.getSystem().getDatabases());
-		ui.getSystem().getReportService().setStrategy(strategy2);
-
-		ReportFilter filter4 = new ReportFilter("", 0, "violation");
-		ui.getSystem().getReportService().generateReport(filter4);
+			switch (choice) {
+			case 1:
+				register();
+				break;
+			case 2:
+				login();
+				break;
+			case 3:
+				addBook();
+				break;
+			case 4:
+				borrowBook();
+				break;
+			case 5:
+				returnBook();
+				break;
+			case 6:
+				system.getDatabases().showAllBook();
+				break;
+			case 7:
+				system.getDatabases().showAllCustomer();
+				break;
+			case 8:
+				report();
+				break;
+			case 0:
+				System.out.println("Thoat chuong trinh!");
+				break;
+			default:
+				System.out.println("Lua chon khong hop le!");
+				break;
+			}
+		} while (choice != 0);
 	}
-	//hehehehehehehehehehehehehehehehehehehehehehehehehheheheheheheeh
+
+	private static void addSampleBooks() {
+		system.getBookService().addBook(new Book("B01", "Lap trinh Java", "Nguyen Van A", "Cong nghe", true));
+		system.getBookService().addBook(new Book("B02", "Co so du lieu", "Tran Van B", "Cong nghe", true));
+		system.getBookService().addBook(new Book("B03", "Phan tich thiet ke he thong", "Le Thi C", "Cong nghe", true));
+		system.getBookService().addBook(new Book("B04", "Toan roi rac", "Pham Van D", "Toan hoc", true));
+		system.getBookService().addBook(new Book("B05", "Ky nang giao tiep", "Hoang Thi E", "Ky nang", true));
+	}
+
+	private static void showMenu() {
+		System.out.println("\n===== LIBRARY SYSTEM =====");
+		System.out.println("1. Dang ki tai khoan");
+		System.out.println("2. Dang nhap");
+		System.out.println("3. Them sach");
+		System.out.println("4. Muon sach");
+		System.out.println("5. Tra sach");
+		System.out.println("6. Xem danh sach sach");
+		System.out.println("7. Xem danh sach khach hang");
+		System.out.println("8. Bao cao");
+		System.out.println("0. Thoat");
+	}
+
+	private static void register() {
+		System.out.println("\n===== DANG KI =====");
+		System.out.print("Nhap id khach hang: ");
+		String id = sc.nextLine();
+
+		System.out.print("Nhap ho ten: ");
+		String name = sc.nextLine();
+
+		System.out.print("Nhap email: ");
+		String email = sc.nextLine();
+
+		System.out.print("Nhap mat khau: ");
+		String password = sc.nextLine();
+
+		System.out.print("Dong y dieu khoan? (Y/N): ");
+		String agreed = sc.nextLine();
+
+		Customer customer = new Customer(id, name, email, password, false);
+		boolean result = system.getRegisterSystem().register(customer, agreed.equalsIgnoreCase("Y"));
+		if (result) {
+			System.out.println("Dang ki thanh cong!");
+		} else {
+			System.out.println("Dang ki that bai! Email/id co the da ton tai hoac thong tin khong hop le.");
+		}
+	}
+
+	private static void login() {
+		System.out.println("\n===== DANG NHAP =====");
+		System.out.print("Nhap email: ");
+		String email = sc.nextLine();
+
+		System.out.print("Nhap mat khau: ");
+		String password = sc.nextLine();
+
+		Customer customer = system.getLoginSystem().login(email, password);
+		if (customer == null) {
+			System.out.println("Dang nhap that bai! Tai khoan khong ton tai hoac sai mat khau.");
+		} else {
+			System.out.println("Dang nhap thanh cong! Xin chao " + customer.getName());
+		}
+	}
+
+	private static void addBook() {
+		System.out.println("\n===== THEM SACH =====");
+		System.out.print("Nhap id sach: ");
+		String idBook = sc.nextLine();
+
+		System.out.print("Nhap ten sach: ");
+		String title = sc.nextLine();
+
+		System.out.print("Nhap ten tac gia: ");
+		String author = sc.nextLine();
+
+		System.out.print("Nhap the loai: ");
+		String category = sc.nextLine();
+
+		Book book = new Book(idBook, title, author, category, true);
+		boolean result = system.getBookService().addBook(book);
+		if (result) {
+			System.out.println("Them sach thanh cong!");
+		} else {
+			System.out.println("Them sach that bai! Id sach co the da ton tai.");
+		}
+	}
+
+	private static void borrowBook() {
+		System.out.println("\n===== MUON SACH =====");
+		System.out.print("Nhap id sach: ");
+		String idBook = sc.nextLine();
+
+		System.out.print("Nhap id khach hang: ");
+		String idCustomer = sc.nextLine();
+
+		Book book = system.getDatabases().findBookById(idBook);
+		Customer customer = system.getDatabases().findCustomerById(idCustomer);
+		if (book == null) {
+			System.out.println("Khong tim thay sach!");
+			return;
+		}
+		if (customer == null) {
+			System.out.println("Khong tim thay khach hang!");
+			return;
+		}
+
+		LocalDate borrowDate = readDate("Nhap ngay muon (yyyy-mm-dd): ");
+		LocalDate dueDate = readDate("Nhap han tra (yyyy-mm-dd): ");
+
+		boolean result = system.getBorrowService().borrowBook(book, customer, borrowDate, dueDate, dueDate);
+		if (result) {
+			System.out.println("Muon sach thanh cong!");
+		} else {
+			System.out.println("Muon sach that bai!");
+		}
+	}
+
+	private static void returnBook() {
+		System.out.println("\n===== TRA SACH =====");
+		System.out.print("Nhap id sach can tra: ");
+		String idBook = sc.nextLine();
+
+		Book book = system.getDatabases().findBookById(idBook);
+		if (book == null) {
+			System.out.println("Khong tim thay sach!");
+			return;
+		}
+
+		LocalDate actualReturnDate = readDate("Nhap ngay tra thuc te (yyyy-mm-dd): ");
+		boolean result = system.getBorrowService().returnBook(book, actualReturnDate);
+		if (result) {
+			System.out.println("Cap nhat tra sach thanh cong!");
+		} else {
+			System.out.println("Khong tim thay thong tin muon sach chua tra!");
+		}
+	}
+
+	private static void report() {
+		System.out.println("\n===== BAO CAO =====");
+		System.out.println("1. Bao cao sach");
+		System.out.println("2. Bao cao khach hang");
+		int reportChoice = readInt("Chon loai bao cao: ");
+
+		System.out.print("Nhap the loai (nhan Enter de bo qua): ");
+		String category = sc.nextLine();
+
+		System.out.print("Nhap trang thai (all/borrowed/available/violation): ");
+		String status = sc.nextLine();
+
+		int year = readInt("Nhap nam (0 de bo qua): ");
+		ReportFilter filter = new ReportFilter(category, year, status);
+
+		if (reportChoice == 1) {
+			system.getReportService().setStrategy(new BookReport(system.getDatabases()));
+		} else if (reportChoice == 2) {
+			system.getReportService().setStrategy(new CustomerReport(system.getDatabases()));
+		} else {
+			System.out.println("Loai bao cao khong hop le!");
+			return;
+		}
+
+		system.getReportService().generateReport(filter);
+	}
+
+	private static int readInt(String message) {
+		while (true) {
+			try {
+				System.out.print(message);
+				return Integer.parseInt(sc.nextLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Vui long nhap so hop le!");
+			}
+		}
+	}
+
+	private static LocalDate readDate(String message) {
+		while (true) {
+			try {
+				System.out.print(message);
+				return LocalDate.parse(sc.nextLine());
+			} catch (Exception e) {
+				System.out.println("Ngay khong hop le! Vi du dung: 2026-05-25");
+			}
+		}
+	}
 }

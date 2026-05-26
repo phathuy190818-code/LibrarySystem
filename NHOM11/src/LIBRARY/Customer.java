@@ -8,6 +8,11 @@ public class Customer extends User {
 		this.violation = violation;
 	}
 
+	public Customer(String id, String name, String email, String password, boolean violation) {
+		super(id, name, email, password);
+		this.violation = violation;
+	}
+
 	public boolean isViolation() {
 		return violation;
 	}
@@ -18,7 +23,7 @@ public class Customer extends User {
 
 	@Override
 	public String toString() {
-		return "id=" + id + ", name=" + name + ", violation=" + violation;
+		return "id=" + id + ", name=" + name + ", email=" + email + ", violation=" + violation;
 	}
 
 }

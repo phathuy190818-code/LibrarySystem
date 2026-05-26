@@ -1,5 +1,6 @@
 package LIBRARY;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class UI {
@@ -16,6 +17,51 @@ public class UI {
 		return system;
 	}
 
+	public void registerUI() {
+		System.out.print("Nhap id khach hang:");
+		String id = sc.nextLine();
+
+		System.out.print("Nhap ho ten:");
+		String name = sc.nextLine();
+
+		System.out.print("Nhap email:");
+		String email = sc.nextLine();
+
+		System.out.print("Nhap mat khau:");
+		String password = sc.nextLine();
+
+		System.out.print("Dong y dieu khoan? (Y/N):");
+		String confirm = sc.nextLine();
+		if (!confirm.equalsIgnoreCase("Y")) {
+			System.out.println("Dang ki khong thanh cong vi chua dong y dieu khoan!");
+			return;
+		}
+
+		Customer customer = new Customer(id, name, email, password, false);
+		boolean result = system.getRegisterSystem().register(customer, true);
+		if (result) {
+			System.out.println("Dang ki thanh cong!");
+		} else {
+			System.out.println("Email da ton tai hoac thong tin khong hop le!");
+		}
+	}
+
+	public Customer loginUI() {
+		System.out.print("Nhap email:");
+		String email = sc.nextLine();
+
+		System.out.print("Nhap mat khau:");
+		String password = sc.nextLine();
+
+		Customer customer = system.getLoginSystem().login(email, password);
+		if (customer == null) {
+			System.out.println("Tai khoan khong ton tai hoac sai mat khau, vui long nhap lai!");
+		} else {
+			System.out.println("Dang nhap thanh cong!");
+		}
+		return customer;
+	}
+
 //thu thu nhap cac thong tin sach va he thong hien thi lai ket qua
 	public void addBook() {
 		System.out.print("Nhap id sach:");
@@ -30,13 +76,7 @@ public class UI {
 		System.out.print("Nhap the loai:");
 		String category = sc.nextLine();
 
-        System.out.print("Nhap gia sach:");
-        double price = Double.parseDouble(sc.nextLine());
-        
-        System.out.print("Nhap nam xuat ban:");
-        int year = Integer.parseInt(sc.nextLine());
-
-		Book book = new Book(idBook, title, author, category, true, price, year);
+		Book book = new Book(idBook, title, author, category, true);
 		boolean result = system.getBookService().addBook(book);
 		if (result) {
 			System.out.println("Them sach thanh cong!");
@@ -54,6 +94,27 @@ public class UI {
 			System.out.println("Xoa sach thanh cong!");
 		} else {
 			System.out.println("Xoa sach khong thanh cong!");
+		}
+	}
+
+	public void returnBookUI() {
+		System.out.print("Nhap id sach can tra:");
+		String idBook = sc.nextLine();
+
+		Book book = system.getDatabases().findBookById(idBook);
+		if (book == null) {
+			System.out.println("Khong tim thay sach!");
+			return;
+		}
+
+		System.out.print("Nhap ngay tra thuc te (yyyy-mm-dd):");
+		LocalDate actualReturnDate = LocalDate.parse(sc.nextLine());
+
+		boolean result = system.getBorrowService().returnBook(book, actualReturnDate);
+		if (result) {
+			System.out.println("Cap nhat trang thai tra sach thanh cong!");
+		} else {
+			System.out.println("Khong tim thay thong tin muon sach chua tra!");
 		}
 	}
 
