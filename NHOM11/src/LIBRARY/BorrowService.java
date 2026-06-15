@@ -5,7 +5,7 @@ import java.util.*;
 
 public class BorrowService {
 	private LibraryDatabase database;
-	private List<IBorrowValidationStrategy> validators = new ArrayList<IBorrowValidationStrategy>();
+	private List<ICheckValidationStrategy> validators = new ArrayList<ICheckValidationStrategy>();
 
 	public BorrowService(LibraryDatabase database) {
 		this.database = database;
@@ -17,14 +17,14 @@ public class BorrowService {
 	}
 	
 	//them phuong thuc kiem tra moi
-	public void addValidator(IBorrowValidationStrategy validator ) {
+	public void addValidator(ICheckValidationStrategy validator ) {
 		this.validators.add(validator);
 	}
 	
 	
 	public boolean borrowBook(Book book, Customer customer, LocalDate dueDate) {
 		//duyet qua tat ca cac chien luoc de kiem tra
-		for (IBorrowValidationStrategy iBorrowValidationStrategy : validators) {
+		for (ICheckValidationStrategy iBorrowValidationStrategy : validators) {
 			if(!iBorrowValidationStrategy.validate(book, customer)) {
 				return false; // 1 chien luoc that bai -> tu choi muon
 			}

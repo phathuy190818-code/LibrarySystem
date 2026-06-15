@@ -3,19 +3,33 @@ package LIBRARY;
 import java.time.LocalDate;
 
 public class Reservation {
+	private String reservationID;
 	private Book book;
     private Customer customer;
     private LocalDate createdDate;
     private boolean active;
+    
 
-    public Reservation(Book book, Customer customer, LocalDate createdDate) {
-        this.book = book;
+    public Reservation(String id,Book book, Customer customer, LocalDate createdDate) {
+        this.reservationID = id;
+    	this.book = book;
         this.customer = customer;
-        this.createdDate = createdDate;
+        this.createdDate = LocalDate.now();
         this.active = true;
     }
+    
 
-    public Book getBook() {
+    public String getReservationID() {
+		return reservationID;
+	}
+
+
+	public void setReservationID(String reservationID) {
+		this.reservationID = reservationID;
+	}
+
+
+	public Book getBook() {
         return book;
     }
 

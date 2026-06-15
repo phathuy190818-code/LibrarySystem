@@ -1,0 +1,122 @@
+package LIBRARY;
+
+import java.time.LocalDate;
+import java.util.*;
+
+public class LibraryDatabase {
+	private List<Book> books = new ArrayList<Book>();
+	private List<Customer> customers = new ArrayList<Customer>();
+	private List<BorrowHistory> histories = new ArrayList<BorrowHistory>();
+	private List<Reservation> reservations = new ArrayList<Reservation>();
+	private Queue<Customer> queue = new LinkedList<Customer>();
+
+	public LibraryDatabase() {
+		super();
+	}
+
+	public List<Book> getBooks() {
+		return books;
+	}
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
+	public List<BorrowHistory> getHistories() {
+		return histories;
+	}
+	
+	public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+	// them sach
+	public boolean addBook(Book book) {
+		for (int i = 0; i < books.size(); i++) {
+			if (books.get(i).getIdBook().equalsIgnoreCase(book.getIdBook())) {
+				return false;
+			}
+		}
+		books.add(book);
+		return true;
+	}
+
+//xoa sach
+	public boolean removeBook(String id) {
+		for (int i = 0; i < books.size(); i++) {
+			Book book = books.get(i);
+			if (book.getIdBook().equalsIgnoreCase(id)) {
+				if (book.isStatus().equalsIgnoreCase("dang muon")) {
+					System.out.println("Sach dang duoc muon, khong the xoa!");
+					return false;
+				}
+				books.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
+//them khach hang
+	public void addCustomer(Customer customer) {
+		customers.add(customer);
+	}
+
+//them lich su muon
+	public void addHistory(BorrowHistory history) {
+		histories.add(history);
+	}
+	
+	public void addReservation(Reservation reservation) {
+        reservations.add(reservation);
+    }
+
+//hien thi danh sach cua sach
+	public void showAllBook() {
+		System.out.println("List Book");
+		for (int i = 0; i < books.size(); i++) {
+			System.out.println(books.get(i));
+		}
+	}
+
+//hien thi danh sach khach hang
+	public void showAllCustomer() {
+		System.out.println("List customer");
+		for (int i = 0; i < customers.size(); i++) {
+			System.out.println(customers.get(i));
+		}
+	}
+	
+	// Lấy danh sách vi phạm lỗi của khách hàng
+	public List<BorrowHistory> getViolationHistories(Customer customer){
+		List<BorrowHistory> result = new ArrayList<BorrowHistory>();
+		for (BorrowHistory history : this.getHistories()) {
+			if(history.getCustomer() == customer && history.isViolationRecord()) {
+				result.add(history);
+			}
+		}
+		return result;
+	}
+	public List<BorrowHistory> getDueSoonRecords(LocalDate date, int daysBeforeDue) {
+        List<BorrowHistory> result = new ArrayList<BorrowHistory>();
+        LocalDate maxDueDate = date.plusDays(daysBeforeDue);
+        for (BorrowHistory history : this.getHistories()) {
+            if (!history.isReturned()
+                    && !history.getDueDate().isBefore(date)
+                    && !history.getDueDate().isAfter(maxDueDate)) {
+                result.add(history);
+            }
+        }
+        return result;
+    }
+
+    public List<BorrowHistory> getDueTodayRecords(LocalDate date) {
+        List<BorrowHistory> result = new ArrayList<BorrowHistory>();
+        for (BorrowHistory history : this.getHistories()) {
+            if (!history.isReturned() && history.getDueDate().isEqual(date)) {
+                result.add(history);
+            }
+        }
+        return result;
+    }
+}

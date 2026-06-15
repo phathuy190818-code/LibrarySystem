@@ -1,0 +1,24 @@
+package LIBRARY;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public class ReservationPickUpService {
+	private LibraryDatabase database;
+	private Reservation reservation;
+	private List<Reservation> reservations = database.getReservations();
+	private BorrowService borrowService;
+	
+	public boolean pickup(Customer customer,Book book, String reservationID, LocalDate dueDate) {
+		for (Reservation reservation : reservations) {
+			if(!reservation.getReservationID().equalsIgnoreCase(reservationID)) {
+				return false;
+			}
+		}
+		
+		book.setStatus("dang muon");
+		borrowService.borrowBook(book, customer, dueDate);
+		return false;
+	}
+
+}

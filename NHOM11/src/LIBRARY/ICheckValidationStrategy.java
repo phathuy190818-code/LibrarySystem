@@ -1,0 +1,8 @@
+package LIBRARY;
+
+public interface ICheckValidationStrategy {
+	
+	public boolean validate(Book book, Customer customer);
+	// kiem tra hop le de cho phep muon sach
+
+}

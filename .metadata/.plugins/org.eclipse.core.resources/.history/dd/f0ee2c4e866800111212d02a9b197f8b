@@ -1,0 +1,48 @@
+package LIBRARY;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ReservationService {
+	private LibraryDatabase database;
+    private NotificationService notificationService;
+    private List<ICheckValidationStrategy> validators = new ArrayList<ICheckValidationStrategy>();
+
+    public ReservationService(LibraryDatabase database, NotificationService notificationService) {
+        this.database = database;
+        this.notificationService = notificationService;
+        validators.add(new CustomerViolationValidation());
+        validators.add(new BookStatusValidate());
+    }
+    
+    public void addValidator(ICheckValidationStrategy validator) {
+    	this.validators.add(validator);
+    }
+
+    public boolean reserveAvailableBook(Book book, Customer customer) {
+        for (ICheckValidationStrategy iCheckValidationStrategy : validators) {
+        	//kiem tra phai la chien luoc kiem tra trang thai sach khong
+			if(iCheckValidationStrategy instanceof BookStatusValidate) {
+				if(iCheckValidationStrategy.validate(book, customer)) {
+					return false; // neu true (con sach) -> khong cho dat giu cho 
+				}
+			} else {
+				if (!iCheckValidationStrategy.validate(book, customer)) {
+	                return false; // neu 1 trong cac chien luoc con lai false -> kh cho dat giu cho
+	            }
+			}
+			Reservation res = new Reservation(book, customer, LocalDate.now());
+			
+			
+		}
+        
+        
+        
+        Reservation reservation = new Reservation(book, customer, LocalDate.now());
+        database.addReservation(reservation);
+        notificationService.notifyCustomer(customer, "Dat truoc sach thanh cong: " + book.getTitle());
+        return true;
+    }
+
+}

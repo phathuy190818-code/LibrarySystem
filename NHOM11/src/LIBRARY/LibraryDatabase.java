@@ -8,7 +8,16 @@ public class LibraryDatabase {
 	private List<Customer> customers = new ArrayList<Customer>();
 	private List<BorrowHistory> histories = new ArrayList<BorrowHistory>();
 	private List<Reservation> reservations = new ArrayList<Reservation>();
+	private Queue<Customer> queue = new LinkedList<Customer>();
 
+	public Queue<Customer> getQueue(){
+		return this.queue;
+	}
+	
+	public void addQueue(Customer cus) {
+		this.queue.add(cus);
+	}
+	
 	public LibraryDatabase() {
 		super();
 	}

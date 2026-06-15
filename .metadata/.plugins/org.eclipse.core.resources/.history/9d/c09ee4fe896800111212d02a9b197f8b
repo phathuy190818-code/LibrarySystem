@@ -1,0 +1,43 @@
+package LIBRARY;
+
+import java.time.LocalDate;
+
+public class Reservation {
+	private Book book;
+    private Customer customer;
+    private LocalDate createdDate;
+    private boolean active;
+
+    public Reservation(Book book, Customer customer, LocalDate createdDate) {
+        this.book = book;
+        this.customer = customer;
+        this.createdDate = createdDate;
+        this.active = true;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void cancel() {
+        this.active = false;
+    }
+
+    @Override
+    public String toString() {
+        return customer.getName() + " dat truoc sach " + book.getTitle() + " ngay " + createdDate;
+    }
+
+}

@@ -1,0 +1,53 @@
+package LIBRARY;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Queue;
+
+public class ReservationPickUpService {
+	private LibraryDatabase database;
+	private List<Reservation> reservations ;
+	private BorrowService borrowService;
+	private Queue<Customer> queue ;
+	private NotificationService noti;
+
+	public ReservationPickUpService(LibraryDatabase database,BorrowService borrowService,  NotificationService noti) {
+		this.database = database;
+		this.borrowService = borrowService;
+		this.noti = noti;
+		reservations = database.getReservations();
+		queue = database.getQueue();
+	}
+
+	// truong hop nguoi dung den nhan
+	public boolean pickup(Customer customer, Book book, String reservationID, LocalDate dueDate) {
+		for (Reservation reservation : reservations) {
+			if (!reservation.getReservationID().equalsIgnoreCase(reservationID)) {
+				System.out.println("khong tim thay thong tin phieu muon");
+				return false;
+			}
+		}
+
+		book.setStatus("dang muon");
+		borrowService.borrowBook(book, customer, dueDate);
+		queue.poll(); // bo nguoi dung khoi hang cho
+		return true;
+	}
+
+	// truong hop nguoi dung khong den nhan
+	public void cancelNoShowReservation(Book book) {
+		
+		// neu danh sach hang cho khong co nguoi
+		if (queue.isEmpty()) {
+			book.setStatus("con sach");
+			return;
+		}
+		Customer missedCustomer = queue.poll(); // bo nguoi dung khoi hang cho
+	
+		// thong bao den nguoi tiep theo trong hang cho
+		if(!queue.isEmpty()) {
+			Customer nextCustomer = queue.peek();
+			noti.notifyCustomer(nextCustomer, "Den thu vien nhan sach trong 3 ngay ke tu " + LocalDate.now());
+		}
+	}
+}

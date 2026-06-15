@@ -1,0 +1,5 @@
+package LIBRARY;
+
+public class InvertValidationDecorator {
+
+}

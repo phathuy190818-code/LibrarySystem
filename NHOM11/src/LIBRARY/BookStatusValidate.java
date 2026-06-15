@@ -1,6 +1,6 @@
 package LIBRARY;
 
-public class BookStatusValidate implements IBorrowValidationStrategy {
+public class BookStatusValidate implements ICheckValidationStrategy {
 
 	@Override
 	public boolean validate(Book book, Customer customer) {

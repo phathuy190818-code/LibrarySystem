@@ -1,0 +1,16 @@
+package LIBRARY;
+
+public class InvertValidationDecorator implements ICheckValidationStrategy {
+	private ICheckValidationStrategy originalStrategy;
+
+	// Nhận chiến lược gốc cần đảo ngược qua Constructor
+	public InvertValidationDecorator(ICheckValidationStrategy originalStrategy) {
+		this.originalStrategy = originalStrategy;
+	}
+
+	@Override
+	public boolean validate(Book book, Customer customer) {
+		// Gọi hàm kiểm tra của thằng gốc và ĐẢO NGƯỢC kết quả bằng dấu '!'
+		return !originalStrategy.validate(book, customer);
+	}
+}

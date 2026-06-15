@@ -1,0 +1,48 @@
+package LIBRARY;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Queue;
+
+public class ReservationPickUpService {
+	private LibraryDatabase database;
+	private Reservation reservation;
+	private List<Reservation> reservations = database.getReservations();
+	private BorrowService borrowService;
+	private CustomerNotificationObserver noti;
+	private Queue<Customer> queue = database.getQueue();
+	
+	// truong hop nguoi dung den nhan
+	public boolean pickup(Customer customer,Book book, String reservationID, LocalDate dueDate) {
+		for (Reservation reservation : reservations) {
+			if(!reservation.getReservationID().equalsIgnoreCase(reservationID)) {
+				System.out.println("khong tim thay thong tin phieu muon");
+				return false;
+			}
+		}
+		
+		book.setStatus("dang muon");
+		borrowService.borrowBook(book, customer, dueDate);
+		queue.poll(); // bo nguoi dung khoi hang cho
+		return true;
+	}
+	
+	public void notifyCustomerInQueue() {
+		noti.onNotification(queue.peek(), "den nhan sach trong 3 ngay");
+	}
+	
+	// truong hop nguoi dung khong den nhan
+	public void cancelNoShowReservation(Book book) {
+		// neu danh sach hang cho khong co nguoi
+		if(database.getQueue().isEmpty()){
+			book.setStatus("con sach");
+			queue.poll(); // bo nguoi dung khoi hang cho
+			return;
+		}
+		//thong bao den nguoi tiep theo trong hang cho
+		notifyCustomerInQueue();
+		queue.poll();
+		
+		
+	}
+}
