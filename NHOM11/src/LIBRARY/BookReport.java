@@ -26,10 +26,10 @@ public class BookReport implements ReportStrategy {
 			boolean matchStatus = true;
 			    //xem sach dang muon
 			if (filter.getStatus().equalsIgnoreCase("borrowed")) {
-				matchStatus = b.isStatus() == false;
+				matchStatus = b.isStatus().equalsIgnoreCase("dang muon");
 				// xem sach con lai trong thu vien
 			} else if (filter.getStatus().equalsIgnoreCase("available")) {
-				matchStatus = b.isStatus() == true;
+				matchStatus = b.isStatus().equalsIgnoreCase("con sach");
 				// xem tat ca sach
 			} else if (filter.getStatus().equalsIgnoreCase("all") || filter.getStatus().equals("")) {
 				matchStatus = true;

@@ -5,13 +5,11 @@ public class Book {
 	private String title;
 	private String author;
 	private String category;
-	private boolean status;
+	private String status; // "con sach", "dang muon", "dang giu"
 	private double price;
 	private int year;// Năm sản xuất
-//true=con sach
-//false=sach dang duoc muon
 
-	public Book(String idBook, String title, String author, String category, boolean status, double price, int year) {
+	public Book(String idBook, String title, String author, String category, String status, double price, int year) {
 		super();
 		this.idBook = idBook;
 		this.title = title;
@@ -38,11 +36,11 @@ public class Book {
 		return category;
 	}
 
-	public boolean isStatus() {
+	public String isStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	public double getPrice() {
@@ -59,3 +57,4 @@ public class Book {
 	}
 
 }
+

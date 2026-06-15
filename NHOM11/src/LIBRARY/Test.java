@@ -23,10 +23,10 @@ public class Test {
 		// muon sach
 		Book b1 = ui.getSystem().getDatabases().getBooks().get(0);
 		Book b2 = ui.getSystem().getDatabases().getBooks().get(1);
-		//Sách b3 b4 là sách có sẵn
-		Book b3 = new Book("113", "CTDL", "N. Dũ", "Programming", true, 120000, 2008);
+		//SĂ¡ch b3 b4 lĂ  sĂ¡ch cĂ³ sáºµn
+		Book b3 = new Book("113", "CTDL", "N. DÅ©", "Programming", "con sach", 120000, 2008);
 		ui.getSystem().getDatabases().addBook(b3);
-        Book b4 = new Book("114", "TKHDT", "N. Trâm", "Programming", true, 200000, 1994);
+        Book b4 = new Book("114", "TKHDT", "N. TrĂ¢m", "Programming", "con sach", 200000, 1994);
         ui.getSystem().getDatabases().addBook(b4);
         
         System.out.println("Danh sach sach");
@@ -35,40 +35,32 @@ public class Test {
 		ui.getSystem().getDatabases().showAllCustomer();
 
 		boolean borrow1 = ui.getSystem().getBorrowService().borrowBook(b1, c4, 
-				LocalDate.of(2026, 1, 1), 
-				LocalDate.of(2026, 1, 10), 
-				LocalDate.of(2026, 1, 15));
+				LocalDate.of(2026, 1, 1));
 		System.out.println("Muon sach lan 1:" + borrow1);
 
 		boolean borrow2 = ui.getSystem().getBorrowService().borrowBook(b2, c1, 
-				LocalDate.of(2026, 2, 2),
-				LocalDate.of(2026, 2, 11),
-				LocalDate.of(2026, 2, 17));
+				LocalDate.of(2026, 2, 2));
 		System.out.println("Muon sach lan 2:" + borrow2);
 
 		boolean borrow3 = ui.getSystem().getBorrowService().borrowBook(b1, c5, 
-				LocalDate.of(2026, 3, 7),
-				LocalDate.of(2026, 3, 17),
-				LocalDate.of(2026, 3, 27));
+				LocalDate.of(2026, 3, 7));
 		System.out.println("Muon sach lan 3:" + borrow3);
-		//Mượn sách b3
+		//MÆ°á»£n sĂ¡ch b3
 		boolean borrow4 = ui.getSystem().getBorrowService().borrowBook(b3, c2, 
-				LocalDate.of(2026, 5, 20),
-				LocalDate.of(2026, 5, 25),
-				LocalDate.of(2026, 5, 27));
+				LocalDate.of(2026, 5, 20));
 		System.out.println("Muon sach lan 4:" + borrow4);
 
-		// tra sach
-		boolean return1 = ui.getSystem().getBorrowService().returnBook(b1);
-		System.out.println("Tra sach lan 1:" + return1);
-		//tra sách b3
-		boolean return2 = ui.getSystem().getBorrowService().returnBook(b3);
-		System.out.println("Tra sach lan 2:" + return2);
+		// tra sach (tra sach khong nam trong borrow service!)
+		// boolean return1 = ui.getSystem().getBorrowService().returnBook(b1);
+		// System.out.println("Tra sach lan 1:" + return1);
+		//tra sĂ¡ch b3
+		// boolean return2 = ui.getSystem().getBorrowService().returnBook(b3);
+		// System.out.println("Tra sach lan 2:" + return2);
 		
-		//Tính tiền phạt của khách c2
+		//TĂ­nh tiá»�n pháº¡t cá»§a khĂ¡ch c2
 		double fine1 = ui.getSystem().getBookService().checkFine(c2);
-		System.out.println("Tiền phạt cần thanh toán của khách hàng " + c2 + " là " + fine1);
-		//đặt trước sách b4
+		System.out.println("Tiá»�n pháº¡t cáº§n thanh toĂ¡n cá»§a khĂ¡ch hĂ ng " + c2 + " lĂ  " + fine1);
+		//Ä‘áº·t trÆ°á»›c sĂ¡ch b4
 		boolean reserved = ui.getSystem().getBookService().reserveBook(b4, c3);
         System.out.println("Dat truoc thanh cong: " + reserved);
 

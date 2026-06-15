@@ -5,6 +5,7 @@ import java.util.List;
 public class FineService {
 	private BorrowService borrowService;
     private FineStrategy strategy;
+    private LibraryDatabase database;
 
     public FineService(BorrowService borrowService, FineStrategy strategy) {
         this.borrowService = borrowService;
@@ -24,7 +25,7 @@ public class FineService {
 
     public double getTotalFine(Customer customer) {
         double total = 0;
-        List<BorrowHistory> violations = borrowService.getViolationHistories(customer);
+        List<BorrowHistory> violations = database.getViolationHistories(customer);
         for (BorrowHistory history : violations) {
             total += calculateFine(history);
         }
@@ -32,7 +33,7 @@ public class FineService {
     }
 
     public void markPaid(Customer customer) {
-        List<BorrowHistory> violations = borrowService.getViolationHistories(customer);
+        List<BorrowHistory> violations = database.getViolationHistories(customer);
         for (BorrowHistory history : violations) {
             history.setFinePaid(true);
         }
@@ -40,7 +41,7 @@ public class FineService {
     }
 
     public void markFailed(Customer customer) {
-        List<BorrowHistory> violations = borrowService.getViolationHistories(customer);
+        List<BorrowHistory> violations = database.getViolationHistories(customer);
         for (BorrowHistory history : violations) {
             history.setPaymentFailed(true);
         }

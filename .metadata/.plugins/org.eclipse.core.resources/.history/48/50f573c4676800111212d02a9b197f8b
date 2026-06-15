@@ -1,0 +1,29 @@
+package LIBRARY;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Customer extends User {
+	private boolean violation;
+	private List<Book> booksBorrowList; // danh sach sach da muon
+
+	public Customer(String id, String name, boolean violation) {
+		super(id, name);
+		this.violation = violation;
+		booksBorrowList = new ArrayList<Book>();
+	}
+
+	public boolean isViolation() {
+		return violation;
+	}
+
+	public void setViolation(boolean violation) {
+		this.violation = violation;
+	}
+
+	@Override
+	public String toString() {
+		return "id=" + id + ", name=" + name + ", violation=" + violation;
+	}
+
+}

@@ -12,7 +12,7 @@ public class ReservationService {
     }
 
     public boolean reserveAvailableBook(Book book, Customer customer) {
-        if (book == null || customer == null || !book.isStatus()) {
+        if (book == null || customer == null || book.isStatus().equalsIgnoreCase("dang muon")) {
             return false;
         }
 

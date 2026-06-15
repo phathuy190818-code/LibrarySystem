@@ -36,7 +36,7 @@ public class UI {
         System.out.print("Nhap nam xuat ban:");
         int year = Integer.parseInt(sc.nextLine());
 
-		Book book = new Book(idBook, title, author, category, true, price, year);
+		Book book = new Book(idBook, title, author, category, "con sach", price, year);
 		boolean result = system.getBookService().addBook(book);
 		if (result) {
 			System.out.println("Them sach thanh cong!");

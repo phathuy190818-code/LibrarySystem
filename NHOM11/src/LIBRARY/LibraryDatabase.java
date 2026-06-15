@@ -1,5 +1,6 @@
 package LIBRARY;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class LibraryDatabase {
@@ -44,7 +45,7 @@ public class LibraryDatabase {
 		for (int i = 0; i < books.size(); i++) {
 			Book book = books.get(i);
 			if (book.getIdBook().equalsIgnoreCase(id)) {
-				if (book.isStatus() == false) {
+				if (book.isStatus().equalsIgnoreCase("dang muon")) {
 					System.out.println("Sach dang duoc muon, khong the xoa!");
 					return false;
 				}
@@ -84,4 +85,37 @@ public class LibraryDatabase {
 			System.out.println(customers.get(i));
 		}
 	}
+	
+	// Lấy danh sách vi phạm lỗi của khách hàng
+	public List<BorrowHistory> getViolationHistories(Customer customer){
+		List<BorrowHistory> result = new ArrayList<BorrowHistory>();
+		for (BorrowHistory history : this.getHistories()) {
+			if(history.getCustomer() == customer && history.isViolationRecord()) {
+				result.add(history);
+			}
+		}
+		return result;
+	}
+	public List<BorrowHistory> getDueSoonRecords(LocalDate date, int daysBeforeDue) {
+        List<BorrowHistory> result = new ArrayList<BorrowHistory>();
+        LocalDate maxDueDate = date.plusDays(daysBeforeDue);
+        for (BorrowHistory history : this.getHistories()) {
+            if (!history.isReturned()
+                    && !history.getDueDate().isBefore(date)
+                    && !history.getDueDate().isAfter(maxDueDate)) {
+                result.add(history);
+            }
+        }
+        return result;
+    }
+
+    public List<BorrowHistory> getDueTodayRecords(LocalDate date) {
+        List<BorrowHistory> result = new ArrayList<BorrowHistory>();
+        for (BorrowHistory history : this.getHistories()) {
+            if (!history.isReturned() && history.getDueDate().isEqual(date)) {
+                result.add(history);
+            }
+        }
+        return result;
+    }
 }

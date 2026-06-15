@@ -1,11 +1,16 @@
 package LIBRARY;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Customer extends User {
 	private boolean violation;
+	List<Book> booksBorrowedList; // danh sach sach da muon
 
 	public Customer(String id, String name, boolean violation) {
 		super(id, name);
 		this.violation = violation;
+		booksBorrowedList = new ArrayList<Book>();
 	}
 
 	public boolean isViolation() {
@@ -15,6 +20,8 @@ public class Customer extends User {
 	public void setViolation(boolean violation) {
 		this.violation = violation;
 	}
+	
+	
 
 	@Override
 	public String toString() {
